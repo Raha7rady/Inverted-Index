@@ -157,7 +157,6 @@ int main()
 
     InvertedIndex index;
 
-    cout << "Building inverted index...\n";
     int totalDocuments = buildInvertedIndex(documentFiles, index);
 
     if (totalDocuments == 0) {
@@ -168,15 +167,38 @@ int main()
     // Example query (already normalized)
     vector<string> query = { "information", "retrieval" };
 
-    cout << "\nSearch Results:\n";
     auto results = rankDocuments(query, index, totalDocuments);
 
-    for (const auto& [docID, score] : results) {
-        cout << "Document " << docID
-            << " | Score: "
-            << fixed << setprecision(3)
-            << score << '\n';
-    }
+cout << "\n==================================================\n";
+cout << " Information Retrieval Results\n";
+cout << "==================================================\n";
+
+cout << "Query: \"";
+for (size_t i = 0; i < query.size(); ++i) {
+    cout << query[i];
+    if (i + 1 < query.size()) cout << " ";
+}
+cout << "\"\n";
+
+cout << "Total Documents: " << totalDocuments << "\n\n";
+
+cout << left
+     << setw(6)  << "Rank"
+     << setw(14) << "Document ID"
+     << setw(18) << "Relevance Score" << '\n';
+
+cout << string(38, '-') << '\n';
+
+int rank = 1;
+for (const auto& [docID, score] : results) {
+    cout << left
+         << setw(6)  << rank++
+         << setw(14) << ("Doc " + to_string(docID))
+         << fixed << setprecision(3)
+         << score << '\n';
+}
+
+cout << "==================================================\n";
 
     return EXIT_SUCCESS;
 }
